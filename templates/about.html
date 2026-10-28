@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}About Project - Global Fuel Analytics{% endblock %}
+
+{% block content %}
+<div class="about-page-wrapper py-5">
+    <div class="container">
+        
+        <!-- About Header -->
+        <div class="text-center max-w-800 mx-auto mb-5">
+            <span class="badge bg-teal-subtle text-teal px-3 py-1 rounded-pill text-uppercase fw-semibold mb-2">Project Documentation</span>
+            <h1 class="text-white fw-extrabold display-5 mb-3">About The Analytics Project</h1>
+            <p class="text-light-muted fs-5 leading-relaxed">
+                “Global Fuel Prices and Taxation Trends: A Comprehensive Analysis” bridges empirical energy economics and visual storytelling through Python Flask and Tableau Public.
+            </p>
+        </div>
+
+        <!-- Section 1: Objectives & Scope -->
+        <div class="card bg-card-dark border-0 rounded-4 p-4 p-md-5 mb-5 shadow-lg">
+            <div class="row align-items-center gy-4">
+                <div class="col-lg-6">
+                    <span class="text-teal text-uppercase fw-bold text-xs tracking-wider">Foundation</span>
+                    <h3 class="text-white fw-bold mt-1 mb-3">Project Objectives</h3>
+                    <p class="text-light-muted small leading-relaxed mb-3">
+                        Energy costs directly impact global supply chains, household disposable income, inflation rates, and geopolitical stability. This project was developed to provide an open, transparent, and interactive mechanism for researchers, policymakers, students, and citizens to analyze international fuel price formation.
+                    </p>
+                    <ul class="list-unstyled text-light-muted small">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-teal me-2"></i> Track the sensitivity of retail gasoline, diesel, and LPG to Brent crude benchmark trends.</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-teal me-2"></i> Quantify the proportion of pump prices constituted by statutory government taxes versus product cost.</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-teal me-2"></i> Examine how geographic location and World Bank income classification dictate national fuel pricing.</li>
+                        <li><i class="bi bi-check-circle-fill text-teal me-2"></i> Evaluate the shielding effect of government energy subsidies during periods of extreme market volatility.</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-4 rounded-4 bg-navy-alt border border-secondary border-opacity-25">
+                        <h5 class="text-white fw-bold mb-3 d-flex align-items-center gap-2">
+                            <i class="bi bi-layers-fill text-teal"></i> Analytical Framework
+                        </h5>
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex gap-3">
+                                <span class="badge bg-teal text-white p-2 rounded-3 h-auto"><i class="bi bi-database"></i></span>
+                                <div>
+                                    <h6 class="text-white small fw-bold mb-1">Data Ingestion &amp; Standardization</h6>
+                                    <p class="text-light-muted text-xs mb-0">Multi-source collection standardized to uniform metric units (USD per Liter).</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <span class="badge bg-teal text-white p-2 rounded-3 h-auto"><i class="bi bi-diagram-3"></i></span>
+                                <div>
+                                    <h6 class="text-white small fw-bold mb-1">Exploratory Visual Modeling</h6>
+                                    <p class="text-light-muted text-xs mb-0">Calculated fields, level-of-detail expressions, and dynamic parameters built inside Tableau Desktop.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <span class="badge bg-teal text-white p-2 rounded-3 h-auto"><i class="bi bi-window-desktop"></i></span>
+                                <div>
+                                    <h6 class="text-white small fw-bold mb-1">Web Integration &amp; Embedding</h6>
+                                    <p class="text-light-muted text-xs mb-0">Production-grade Flask interface utilizing modern web components and responsive stylesheets.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Dataset Schema & Data Dictionary -->
+        <div class="card bg-card-dark border-0 rounded-4 p-4 p-md-5 mb-5 shadow-lg">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 gap-3">
+                <div>
+                    <span class="text-teal text-uppercase fw-bold text-xs tracking-wider">Data Architecture</span>
+                    <h3 class="text-white fw-bold mt-1 mb-0">Dataset Schema &amp; Data Dictionary</h3>
+                </div>
+                <span class="badge bg-navy-alt text-teal border border-teal-subtle px-3 py-2 rounded-pill">
+                    <i class="bi bi-table me-1"></i> 10 Structured Dimensions &amp; Measures
+                </span>
+            </div>
+
+            <p class="text-light-muted small mb-4">
+                The underlying dataset combines international energy indices, retail pump surveys, and fiscal records. The table below outlines each field used within the Tableau workbook:
+            </p>
+
+            <div class="table-responsive rounded-3 border border-secondary border-opacity-25">
+                <table class="table table-dark table-hover mb-0 align-middle">
+                    <thead class="table-navy-head">
+                        <tr>
+                            <th scope="col" class="py-3 px-4 text-teal">Field Name</th>
+                            <th scope="col" class="py-3 px-3 text-teal">Data Type &amp; Role</th>
+                            <th scope="col" class="py-3 px-4 text-teal">Field Description &amp; Analytical Relevance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in schema_fields %}
+                        <tr>
+                            <td class="py-3 px-4 fw-bold font-monospace text-white">
+                                <i class="bi bi-chevron-right text-teal me-1 text-xs"></i>{{ item.field }}
+                            </td>
+                            <td class="py-3 px-3">
+                                <span class="badge {% if 'Measure' in item.type %}bg-teal text-white{% else %}bg-secondary-subtle text-light-muted{% endif %}">
+                                    {{ item.type }}
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-light-muted small">{{ item.desc }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 3: Data Preparation Methodology & Visualizations Created -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <div class="card bg-card-dark border-0 rounded-4 p-4 h-100 shadow-lg">
+                    <span class="text-teal text-uppercase fw-bold text-xs tracking-wider">Process Pipeline</span>
+                    <h4 class="text-white fw-bold mt-1 mb-3">Data Preparation Methodology</h4>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent text-light-muted small px-0 py-3 border-secondary border-opacity-25">
+                            <strong class="text-white d-block mb-1">1. Currency &amp; Volume Normalization:</strong>
+                            Global retail fuel prices are frequently quoted in local sovereign currencies and disparate imperial/metric units (e.g., Gallons, Liters). All values were standardized into United States Dollars per Liter (USD/L) based on historical daily exchange rates.
+                        </li>
+                        <li class="list-group-item bg-transparent text-light-muted small px-0 py-3 border-secondary border-opacity-25">
+                            <strong class="text-white d-block mb-1">2. Handling Missing Values &amp; Outliers:</strong>
+                            Anomalous spikes or missing observations caused by holiday reporting halts were treated using forward-fill imputation for temporal consistency without skewing overall variance.
+                        </li>
+                        <li class="list-group-item bg-transparent text-light-muted small px-0 py-3 border-secondary border-opacity-25">
+                            <strong class="text-white d-block mb-1">3. Categorical Harmonization:</strong>
+                            Regional groupings and World Bank Income tiers (Low, Lower-Middle, Upper-Middle, High) were verified against ISO standard alpha-3 sovereign country codes.
+                        </li>
+                        <li class="list-group-item bg-transparent text-light-muted small px-0 py-3 border-secondary border-opacity-0">
+                            <strong class="text-white d-block mb-1">4. Tax &amp; Subsidy Segmentation:</strong>
+                            Tax percentages were decomposed into statutory excise taxes, environmental surcharges, and VAT, while subsidy levels were tiered into High, Moderate, and None.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card bg-card-dark border-0 rounded-4 p-4 h-100 shadow-lg">
+                    <span class="text-teal text-uppercase fw-bold text-xs tracking-wider">Dashboard Design</span>
+                    <h4 class="text-white fw-bold mt-1 mb-3">Visualizations Created</h4>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-map-fill text-teal"></i>
+                                <h6 class="text-white fw-bold mb-0">Global Fuel Pricing Choropleth Map</h6>
+                            </div>
+                            <p class="text-light-muted text-xs mb-0">Visualizes geospatial distribution of retail fuel costs by country with interactive tooltip breakdowns.</p>
+                        </div>
+                        <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-graph-up text-teal"></i>
+                                <h6 class="text-white fw-bold mb-0">Dual-Axis Temporal Trend Line</h6>
+                            </div>
+                            <p class="text-light-muted text-xs mb-0">Overlays Brent Crude spot prices against retail petrol/diesel averages to visualize transmission lags.</p>
+                        </div>
+                        <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-pie-chart text-teal"></i>
+                                <h6 class="text-white fw-bold mb-0">Tax Percentage Distribution by Region</h6>
+                            </div>
+                            <p class="text-light-muted text-xs mb-0">Exposes the heavy divergence in government fiscal reliance between European, Asian, and American markets.</p>
+                        </div>
+                        <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-bar-chart-steps text-teal"></i>
+                                <h6 class="text-white fw-bold mb-0">Subsidy vs. Income Matrix</h6>
+                            </div>
+                            <p class="text-light-muted text-xs mb-0">Matrix view highlighting which income classifications bear the brunt of unshielded energy market swings.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Technologies & Limitations -->
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-card-dark border-0 rounded-4 p-4 h-100 shadow-lg">
+                    <span class="text-teal text-uppercase fw-bold text-xs tracking-wider">Tech Stack</span>
+                    <h4 class="text-white fw-bold mt-1 mb-3">Tools &amp; Technologies Used</h4>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10 text-center">
+                                <i class="bi bi-filetype-py display-6 text-teal mb-2"></i>
+                                <h6 class="text-white fw-bold mb-1">Python &amp; Flask</h6>
+                                <p class="text-light-muted text-xs mb-0">Lightweight backend web server, route handling &amp; templating.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10 text-center">
+                                <i class="bi bi-bar-chart-steps display-6 text-teal mb-2"></i>
+                                <h6 class="text-white fw-bold mb-1">Tableau Public</h6>
+                                <p class="text-light-muted text-xs mb-0">Calculated fields, visual analytics, parameters &amp; cloud hosting.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10 text-center">
+                                <i class="bi bi-bootstrap-fill display-6 text-teal mb-2"></i>
+                                <h6 class="text-white fw-bold mb-1">Bootstrap 5</h6>
+                                <p class="text-light-muted text-xs mb-0">Modern responsive grid, accessibility compliance &amp; styling.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10 text-center">
+                                <i class="bi bi-git display-6 text-teal mb-2"></i>
+                                <h6 class="text-white fw-bold mb-1">Git &amp; GitHub</h6>
+                                <p class="text-light-muted text-xs mb-0">Version control, repository management &amp; deployment workflow.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card bg-card-dark border-0 rounded-4 p-4 h-100 shadow-lg">
+                    <span class="text-orange text-uppercase fw-bold text-xs tracking-wider">Academic Integrity</span>
+                    <h4 class="text-white fw-bold mt-1 mb-3">Limitations of the Analysis</h4>
+                    <ul class="list-unstyled text-light-muted small">
+                        <li class="mb-3 d-flex gap-2">
+                            <i class="bi bi-exclamation-circle text-orange mt-1"></i>
+                            <div>
+                                <strong class="text-white">Exchange Rate Volatility:</strong>
+                                Converting domestic currency pump prices to USD introduces foreign exchange fluctuation noise during periods of local currency depreciation.
+                            </div>
+                        </li>
+                        <li class="mb-3 d-flex gap-2">
+                            <i class="bi bi-exclamation-circle text-orange mt-1"></i>
+                            <div>
+                                <strong class="text-white">Sub-National Intra-Country Variance:</strong>
+                                National averages do not capture localized price spikes in remote, landlocked, or rural provinces where transport logistics inflate distribution fees.
+                            </div>
+                        </li>
+                        <li class="mb-3 d-flex gap-2">
+                            <i class="bi bi-exclamation-circle text-orange mt-1"></i>
+                            <div>
+                                <strong class="text-white">Tax Transparency Lag:</strong>
+                                Unbundling federal excise versus municipal value-added tax depends on each country's disclosure cadence, which may result in minor reporting latency.
+                            </div>
+                        </li>
+                        <li class="d-flex gap-2">
+                            <i class="bi bi-exclamation-circle text-orange mt-1"></i>
+                            <div>
+                                <strong class="text-white">Refinery Quality Differentials:</strong>
+                                Octane ratings (e.g., RON 91 vs RON 95) and sulfur content standards vary across nations and are grouped within standard fuel buckets.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+

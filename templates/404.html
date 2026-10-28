@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - Global Fuel Analytics{% endblock %}
+
+{% block content %}
+<div class="error-page-wrapper py-5 text-center my-auto">
+    <div class="container">
+        <div class="max-w-600 mx-auto py-5">
+            <div class="error-code-badge mb-4">
+                <span class="display-1 fw-extrabold text-teal">404</span>
+            </div>
+            
+            <h2 class="text-white fw-bold mb-3">
+                {{ error_title or "Page Not Found / Prishta Nahi Mila" }}
+            </h2>
+            
+            <p class="text-light-muted fs-6 mb-4 leading-relaxed">
+                {{ error_msg or "Aap jis page par jaane ki koshish kar rahe hain, woh maujood nahi hai ya uska URL badal diya gaya hai. Kripya niche diye gaye buttons se sahi page par jayein." }}
+            </p>
+
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{{ url_for('home') }}" class="btn btn-teal-gradient px-4 py-3 rounded-pill fw-semibold shadow-teal">
+                    <i class="bi bi-house-door-fill me-2"></i> Go to Homepage
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-teal px-4 py-3 rounded-pill fw-semibold">
+                    <i class="bi bi-speedometer2 me-2"></i> Open Dashboard
+                </a>
+                <a href="{{ url_for('about') }}" class="btn btn-outline-light-custom px-4 py-3 rounded-pill fw-semibold">
+                    <i class="bi bi-info-circle me-2"></i> About Project
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

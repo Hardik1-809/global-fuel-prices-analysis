@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}Global Fuel Analytics & Taxation Trends - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden py-5 py-lg-6">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative z-2">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-7">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill bg-teal-subtle text-teal border border-teal-subtle">
+                    <span class="pulse-indicator"></span>
+                    <span class="small fw-semibold text-uppercase tracking-wider">Tableau Capstone Project</span>
+                </div>
+                <h1 class="hero-title text-white fw-extrabold display-5 mb-3">
+                    Global Fuel Prices &amp; <span class="text-teal-gradient">Taxation Trends</span>
+                </h1>
+                <p class="hero-subtitle text-light-muted fs-5 mb-4 leading-relaxed">
+                    A comprehensive empirical study exploring retail petrol, diesel, and LPG price dynamics across international markets. Investigate how crude oil fluctuations, fiscal taxation regimes, and government subsidies shape pump prices worldwide.
+                </p>
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-teal-gradient btn-lg px-4 py-3 rounded-pill fw-semibold shadow-teal">
+                        <i class="bi bi-speedometer2 me-2"></i> Explore Dashboard
+                    </a>
+                    <a href="{{ url_for('story') }}" class="btn btn-outline-light-custom btn-lg px-4 py-3 rounded-pill fw-semibold">
+                        <i class="bi bi-collection-play me-2"></i> View Insights
+                    </a>
+                </div>
+                <div class="row g-3 pt-3 border-top border-secondary border-opacity-25">
+                    {% for h in dataset_highlights %}
+                    <div class="col-6 col-sm-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="{{ h.icon }} fs-4 text-teal"></i>
+                            <div>
+                                <div class="text-light-muted text-xs text-uppercase">{{ h.title }}</div>
+                                <div class="text-white fw-bold small">{{ h.val }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="hero-viz-preview-card p-3 rounded-4 shadow-2xl position-relative">
+                    <div class="card-glass-header d-flex align-items-center justify-content-between pb-2 mb-2 border-bottom border-secondary border-opacity-25">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="status-dot-sm bg-danger"></span>
+                            <span class="status-dot-sm bg-warning"></span>
+                            <span class="status-dot-sm bg-success"></span>
+                            <span class="text-light-muted small ms-2"><i class="bi bi-bar-chart-fill text-teal me-1"></i> Interactive Visualization Preview</span>
+                        </div>
+                        <span class="badge bg-dark-subtle text-teal">Tableau Public</span>
+                    </div>
+                    <div class="preview-display p-3 text-center rounded-3">
+                        <div class="globe-animation-wrapper my-3">
+                            <i class="bi bi-globe-central-south display-1 text-teal pulse-glow"></i>
+                        </div>
+                        <h5 class="text-white fw-bold mb-1">Global Price Variance</h5>
+                        <p class="text-light-muted small mb-3">
+                            Multi-dimensional analysis spanning Brent Crude, regional income brackets, and subsidy tiers.
+                        </p>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-sm btn-teal px-4 py-2 rounded-pill">
+                            Open Interactive Tableau Sheet <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                    <div class="mt-2 text-center">
+                        <small class="text-muted"><i class="bi bi-check-circle text-teal me-1"></i> Verified against published Tableau Public workbook</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Research Objectives Section -->
+<section class="py-5 bg-navy-alt">
+    <div class="container">
+        <div class="section-header text-center max-w-700 mx-auto mb-5">
+            <span class="text-teal text-uppercase fw-bold text-xs tracking-wider">Empirical Research Framework</span>
+            <h2 class="text-white fw-bold mt-2">Project Analytical Objectives</h2>
+            <p class="text-light-muted">
+                Understanding global energy affordability and fiscal policy variance through structured exploratory data analysis.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="objective-card p-4 rounded-4 h-100">
+                    <div class="icon-bubble mb-3">
+                        <i class="bi bi-graph-up-arrow text-teal fs-3"></i>
+                    </div>
+                    <h5 class="text-white fw-bold mb-2">Price Trend Analysis</h5>
+                    <p class="text-light-muted small mb-0">
+                        Map historical retail fuel price changes over time in relation to global Brent crude oil benchmark shifts.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="objective-card p-4 rounded-4 h-100">
+                    <div class="icon-bubble mb-3">
+                        <i class="bi bi-geo-alt-fill text-teal fs-3"></i>
+                    </div>
+                    <h5 class="text-white fw-bold mb-2">Regional Disparities</h5>
+                    <p class="text-light-muted small mb-0">
+                        Compare price distributions across geographic regions and evaluate disparities driven by local refining capacity.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="objective-card p-4 rounded-4 h-100">
+                    <div class="icon-bubble mb-3">
+                        <i class="bi bi-receipt-cutoff text-teal fs-3"></i>
+                    </div>
+                    <h5 class="text-white fw-bold mb-2">Taxation Impact</h5>
+                    <p class="text-light-muted small mb-0">
+                        Isolate the influence of government excise taxes, VAT, and carbon duties on final retail pump prices.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="objective-card p-4 rounded-4 h-100">
+                    <div class="icon-bubble mb-3">
+                        <i class="bi bi-shield-shaded text-teal fs-3"></i>
+                    </div>
+                    <h5 class="text-white fw-bold mb-2">Subsidy & Income Levels</h5>
+                    <p class="text-light-muted small mb-0">
+                        Assess how national income brackets (World Bank classification) and subsidy intensity insulate consumers from spikes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Fuel Categories & Summary Cards -->
+<section class="py-5">
+    <div class="container">
+        <div class="section-header text-center max-w-700 mx-auto mb-5">
+            <span class="text-orange text-uppercase fw-bold text-xs tracking-wider">Analytical Dimensions</span>
+            <h2 class="text-white fw-bold mt-2">Fuel Commodities &amp; Fiscal Indicators</h2>
+            <p class="text-light-muted">
+                Each category is tracked within the Tableau workbook with standardized metric units, allowing cross-national price benchmarking.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            {% for item in fuel_categories %}
+            <div class="col-md-6 col-lg-3">
+                <div class="fuel-card card bg-card-dark border-0 rounded-4 h-100 position-relative overflow-hidden">
+                    <div class="card-accent-line"></div>
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="fuel-icon-box">
+                                <i class="bi {{ item.icon }} text-teal fs-4"></i>
+                            </span>
+                            <span class="badge bg-secondary-subtle text-light-muted">{{ item.badge }}</span>
+                        </div>
+                        <h4 class="text-white fw-bold h5 mb-2">{{ item.name }}</h4>
+                        <p class="text-light-muted small flex-grow-1 leading-relaxed">
+                            {{ item.desc }}
+                        </p>
+                        <div class="fuel-card-meta mt-3 pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="d-block text-xs text-light-muted text-uppercase">{{ item.metric_label }}</span>
+                                <span class="fw-semibold text-teal small">{{ item.metric_value }}</span>
+                            </div>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-teal btn-sm rounded-circle p-2" title="View in Dashboard">
+                                <i class="bi bi-arrow-up-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Interactive Exploration Callout -->
+<section class="py-5 bg-gradient-cta">
+    <div class="container">
+        <div class="cta-box p-4 p-lg-5 rounded-4 position-relative overflow-hidden text-center text-lg-start">
+            <div class="row align-items-center gy-4">
+                <div class="col-lg-8">
+                    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-teal text-white small fw-bold mb-3">
+                        <i class="bi bi-cpu-fill"></i> Fully Integrated Tableau Public
+                    </div>
+                    <h3 class="text-white fw-bold display-6 mb-2">Ready to Interact with the Live Visuals?</h3>
+                    <p class="text-light-muted fs-6 mb-0">
+                        Filter by Country, Date range, Region, and Income classification directly inside the responsive embedded canvas.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <div class="d-flex flex-column flex-sm-row justify-content-lg-end gap-2">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-teal-gradient btn-lg px-4 py-3 rounded-pill fw-semibold">
+                            <i class="bi bi-speedometer2 me-2"></i> Launch Dashboard
+                        </a>
+                        <a href="{{ url_for('story') }}" class="btn btn-outline-light-custom btn-lg px-4 py-3 rounded-pill fw-semibold">
+                            <i class="bi bi-journal-text me-2"></i> Read Story
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Interactive Dashboard - Global Fuel Analytics{% endblock %}
+
+{% block content %}
+<div class="dashboard-page-wrapper py-4">
+    <div class="container-fluid px-lg-4">
+        
+        <!-- Dashboard Top Header Bar -->
+        <div class="row align-items-center mb-4 g-3">
+            <div class="col-lg-7">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small">
+                        <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-teal">Home</a></li>
+                        <li class="breadcrumb-item active text-light-muted" aria-current="page">Interactive Dashboard</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 text-white fw-bold mb-1">
+                    <i class="bi bi-speedometer2 text-teal me-2"></i>Global Fuel Price &amp; Taxation Dashboard
+                </h1>
+                <p class="text-light-muted small mb-0">
+                    Live interactive exploration of petrol, diesel, and LPG trends across global economies with subsidy and tax indicators.
+                </p>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="col-lg-5 text-lg-end">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+                    <button type="button" class="btn btn-outline-teal btn-sm rounded-pill" id="reloadVizBtn" title="Refresh Tableau Visualization">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Reload Viz
+                    </button>
+                    <button type="button" class="btn btn-outline-teal btn-sm rounded-pill" id="fullscreenVizBtn" title="Toggle Fullscreen View">
+                        <i class="bi bi-arrows-fullscreen me-1"></i> Fullscreen
+                    </button>
+                    <a href="{{ viz_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-teal-gradient btn-sm rounded-pill shadow-sm" title="Open directly on Tableau Public servers">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> Tableau Public Direct
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter / Guide Hint Strip -->
+        <div class="filter-hint-strip p-3 rounded-3 mb-4 d-flex flex-wrap align-items-center justify-content-between gap-3 bg-card-dark border border-secondary border-opacity-25">
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-teal text-white"><i class="bi bi-sliders me-1"></i> Interactive Features</span>
+                <span class="text-light-muted small">
+                    Use Tableau filters on the dashboard canvas to segment by <strong>Country</strong>, <strong>Income Level</strong>, <strong>Region</strong>, and <strong>Date Range</strong>.
+                </span>
+            </div>
+            <div class="d-flex align-items-center gap-3 small text-light-muted">
+                <span><i class="bi bi-mouse me-1 text-teal"></i> Hover charts for Tooltips</span>
+                <span class="d-none d-md-inline">&bull;</span>
+                <span class="d-none d-md-inline"><i class="bi bi-funnel me-1 text-teal"></i> Click legends to cross-filter</span>
+            </div>
+        </div>
+
+        <!-- Tableau Dashboard Container -->
+        <div class="tableau-stage-card rounded-4 p-2 p-md-3 bg-card-dark shadow-2xl position-relative border border-secondary border-opacity-25" id="tableauCardContainer">
+            
+            <!-- Loading Indicator -->
+            <div id="tableauLoadingState" class="text-center py-5">
+                <div class="spinner-border text-teal mb-3" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Loading visualization...</span>
+                </div>
+                <h5 class="text-white fw-bold">Connecting to Tableau Public...</h5>
+                <p class="text-light-muted small mb-0">Fetching interactive workbook and data models.</p>
+            </div>
+
+            <!-- Visualization Canvas -->
+            <div class="tableau-embed-responsive" id="tableauVizWrapper">
+                <!-- Official Tableau Embedding API v3 Web Component -->
+                <tableau-viz 
+                    id="tableauDashboardViz"
+                    src="{{ viz_url }}"
+                    device="default"
+                    toolbar="bottom"
+                    hide-tabs="true">
+                </tableau-viz>
+            </div>
+
+            <!-- Fallback Alert Box (visible if script fails or embed is blocked) -->
+            <div id="tableauFallbackAlert" class="tableau-fallback-box p-4 rounded-3 text-center d-none mt-3">
+                <div class="mb-3">
+                    <i class="bi bi-exclamation-triangle-fill text-warning fs-1"></i>
+                </div>
+                <h5 class="text-white fw-bold">Tableau Embed Encountered An Issue?</h5>
+                <p class="text-light-muted small max-w-600 mx-auto mb-3">
+                    If your browser privacy extensions, adblockers, or strict corporate firewalls block cross-origin third-party scripts from Tableau Public, you can still view the full live dashboard directly or use the iframe fallback below:
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{{ viz_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-teal-gradient px-4 py-2 rounded-pill">
+                        <i class="bi bi-box-arrow-up-right me-2"></i> Open Directly in Tableau Public
+                    </a>
+                    <button type="button" class="btn btn-outline-light-custom px-4 py-2 rounded-pill" id="activateIframeFallbackBtn">
+                        <i class="bi bi-window-sidebar me-2"></i> Load Iframe Version
+                    </button>
+                </div>
+            </div>
+
+            <!-- Optional Iframe Container for Fallback -->
+            <div id="iframeFallbackContainer" class="d-none mt-3">
+                <div class="ratio ratio-16x9" style="min-height: 800px;">
+                    <iframe 
+                        id="tableauIframe"
+                        src="{{ dashboard_embed_url }}" 
+                        title="Global Fuel Price Dashboard Iframe Fallback"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Dashboard Insights & Metadata Section -->
+        <div class="row g-4 mt-4">
+            <div class="col-lg-8">
+                <div class="card bg-card-dark border-0 rounded-4 p-4 h-100">
+                    <h5 class="text-white fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-journal-text text-teal"></i> How to Read This Dashboard
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                                <h6 class="text-teal fw-bold mb-1"><i class="bi bi-globe me-1"></i> Global Fuel Map</h6>
+                                <p class="text-light-muted small mb-0">
+                                    Choropleth map displays retail fuel pricing tiers across sovereign borders. Darker hues represent higher consumer pump costs.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                                <h6 class="text-teal fw-bold mb-1"><i class="bi bi-percent me-1"></i> Tax vs. Crude Spread</h6>
+                                <p class="text-light-muted small mb-0">
+                                    Correlates Brent crude oil benchmark against national taxation percentages to demonstrate why pump prices diverge from raw crude trends.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                                <h6 class="text-teal fw-bold mb-1"><i class="bi bi-cash-coin me-1"></i> Income Bracket Analysis</h6>
+                                <p class="text-light-muted small mb-0">
+                                    Categorizes nations into High, Upper-Middle, and Lower-Middle tiers to reflect energy purchasing power parity and affordability burden.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                                <h6 class="text-teal fw-bold mb-1"><i class="bi bi-shield-lock me-1"></i> Subsidy Shielding</h6>
+                                <p class="text-light-muted small mb-0">
+                                    Highlights governments applying direct or indirect fuel subsidies that cushion domestic populations from international price shocks.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card bg-card-dark border-0 rounded-4 p-4 h-100">
+                    <h5 class="text-white fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-link-45deg text-teal"></i> Tableau Configuration
+                    </h5>
+                    <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10 mb-3">
+                        <span class="text-xs text-light-muted text-uppercase d-block mb-1">Active Dashboard Source URL</span>
+                        <code class="text-teal small text-break d-block">{{ viz_url }}</code>
+                    </div>
+                    <p class="text-light-muted small mb-3">
+                        Need to point to another published sheet or revision? Update <code>TABLEAU_DASHBOARD_URL</code> in <code>app.py</code> or pass it as an environment variable.
+                    </p>
+                    <a href="{{ url_for('story') }}" class="btn btn-outline-teal w-100 rounded-pill py-2 small">
+                        <i class="bi bi-journal-bookmark me-1"></i> Proceed to Tableau Story Walkthrough
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const viz = document.getElementById('tableauDashboardViz');
+        const loadingState = document.getElementById('tableauLoadingState');
+        const fallbackAlert = document.getElementById('tableauFallbackAlert');
+        const reloadBtn = document.getElementById('reloadVizBtn');
+        const fullscreenBtn = document.getElementById('fullscreenVizBtn');
+        const cardContainer = document.getElementById('tableauCardContainer');
+        const iframeContainer = document.getElementById('iframeFallbackContainer');
+        const activateIframeBtn = document.getElementById('activateIframeFallbackBtn');
+
+        // Check viz load status
+        if (viz) {
+            viz.addEventListener('firstinteractive', function () {
+                if (loadingState) loadingState.classList.add('d-none');
+            });
+
+            // Timeout fallback: if viz hasn't fired firstinteractive within 8 seconds, reveal fallback link
+            setTimeout(function () {
+                if (loadingState && !loadingState.classList.contains('d-none')) {
+                    loadingState.classList.add('d-none');
+                    if (fallbackAlert) fallbackAlert.classList.remove('d-none');
+                }
+            }, 8000);
+        }
+
+        // Reload button
+        if (reloadBtn && viz) {
+            reloadBtn.addEventListener('click', function () {
+                if (loadingState) loadingState.classList.remove('d-none');
+                const currentSrc = viz.getAttribute('src');
+                viz.setAttribute('src', '');
+                setTimeout(() => {
+                    viz.setAttribute('src', currentSrc);
+                }, 200);
+            });
+        }
+
+        // Fullscreen button
+        if (fullscreenBtn && cardContainer) {
+            fullscreenBtn.addEventListener('click', function () {
+                if (!document.fullscreenElement) {
+                    cardContainer.requestFullscreen().catch(err => {
+                        console.warn("Fullscreen request error:", err);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+        }
+
+        // Activate iframe button fallback
+        if (activateIframeBtn && iframeContainer) {
+            activateIframeBtn.addEventListener('click', function () {
+                if (viz) viz.style.display = 'none';
+                if (fallbackAlert) fallbackAlert.classList.add('d-none');
+                iframeContainer.classList.remove('d-none');
+            });
+        }
+    });
+</script>
+{% endblock %}
+

@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block title %}Tableau Story - Global Fuel Analytics{% endblock %}
+
+{% block content %}
+<div class="story-page-wrapper py-4">
+    <div class="container-fluid px-lg-4">
+        
+        <!-- Story Top Header -->
+        <div class="row align-items-center mb-4 g-3">
+            <div class="col-lg-7">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small">
+                        <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-teal">Home</a></li>
+                        <li class="breadcrumb-item active text-light-muted" aria-current="page">Tableau Story</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 text-white fw-bold mb-1">
+                    <i class="bi bi-journal-bookmark-fill text-teal me-2"></i>Tableau Analytical Story
+                </h1>
+                <p class="text-light-muted small mb-0">
+                    A structured data story navigating fuel price dynamics, taxation frameworks, and socio-economic vulnerability.
+                </p>
+            </div>
+
+            <div class="col-lg-5 text-lg-end">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+                    <button type="button" class="btn btn-outline-teal btn-sm rounded-pill" id="reloadStoryBtn">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Reload Story
+                    </button>
+                    <a href="{{ story_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-teal-gradient btn-sm rounded-pill shadow-sm">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> Open Story in Tableau Public
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Introduction Banner -->
+        <div class="story-intro-card p-4 rounded-4 mb-4 bg-card-dark border border-secondary border-opacity-25">
+            <div class="row align-items-center gy-3">
+                <div class="col-lg-9">
+                    <span class="badge bg-teal-subtle text-teal mb-2"><i class="bi bi-book-half me-1"></i> Narrative Walkthrough</span>
+                    <h4 class="text-white fw-bold mb-2">Narrative Purpose: From Raw Numbers to Policy Insight</h4>
+                    <p class="text-light-muted small mb-0 leading-relaxed">
+                        While the interactive dashboard offers unrestricted exploration, this Tableau Story provides a guided sequence. Each story point reveals how international benchmark crude pricing transmits to the retail pump, how fiscal taxation burdens or cushions citizens, and how geography dictates fuel access.
+                    </p>
+                </div>
+                <div class="col-lg-3 text-lg-end">
+                    <div class="p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10 text-center">
+                        <div class="text-xs text-light-muted text-uppercase">Guided Points</div>
+                        <div class="text-teal fw-bold fs-4">Sequential</div>
+                        <div class="text-xs text-light-muted">Narrative Flow</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Embedded Tableau Story Section -->
+        <div class="tableau-stage-card rounded-4 p-2 p-md-3 bg-card-dark shadow-2xl position-relative border border-secondary border-opacity-25" id="storyVizContainer">
+            
+            <!-- Loading Indicator -->
+            <div id="storyLoadingState" class="text-center py-5">
+                <div class="spinner-border text-teal mb-3" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Loading Tableau Story...</span>
+                </div>
+                <h5 class="text-white fw-bold">Connecting to Tableau Story...</h5>
+                <p class="text-light-muted small mb-0">Rendering narrative points and workbook tabs.</p>
+            </div>
+
+            <!-- Visualization Canvas -->
+            <div class="tableau-embed-responsive" id="storyVizWrapper">
+                <tableau-viz 
+                    id="tableauStoryViz"
+                    src="{{ story_url }}"
+                    device="default"
+                    toolbar="bottom"
+                    hide-tabs="false">
+                </tableau-viz>
+            </div>
+
+            <!-- Fallback Alert Box -->
+            <div id="storyFallbackAlert" class="tableau-fallback-box p-4 rounded-3 text-center d-none mt-3">
+                <div class="mb-3">
+                    <i class="bi bi-info-circle-fill text-warning fs-1"></i>
+                </div>
+                <h5 class="text-white fw-bold">Story Visualization Embed Notice</h5>
+                <p class="text-light-muted small max-w-600 mx-auto mb-3">
+                    If you haven't published a separate "Story" tab yet or if cross-site embeds are paused in your browser, you can directly access the workbook on Tableau Public or configure your custom Story URL in <code>app.py</code>:
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{{ story_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-teal-gradient px-4 py-2 rounded-pill">
+                        <i class="bi bi-box-arrow-up-right me-2"></i> Open Story on Tableau Public
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-teal px-4 py-2 rounded-pill">
+                        <i class="bi bi-speedometer2 me-2"></i> Switch to Active Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- Optional Iframe Container for Fallback -->
+            <div id="storyIframeContainer" class="d-none mt-3">
+                <div class="ratio ratio-16x9" style="min-height: 800px;">
+                    <iframe 
+                        id="storyIframe"
+                        src="{{ story_embed_url }}" 
+                        title="Global Fuel Story Iframe Fallback"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Structured Analytical Findings Section (Placeholders for authentic data findings) -->
+        <div class="mt-5">
+            <div class="section-header mb-4">
+                <span class="text-teal text-uppercase fw-bold text-xs tracking-wider">Analytical Structure</span>
+                <h3 class="text-white fw-bold mt-1">Core Investigation Themes &amp; Key Findings</h3>
+                <p class="text-light-muted small">
+                    Synthesizing visual observations from the Tableau Story. (Analytical findings dynamically referenced from Tableau visual trends):
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Theme 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="finding-card card bg-card-dark border-0 rounded-4 p-4 h-100">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="finding-step-badge">Point 01</span>
+                            <i class="bi bi-droplet-half text-teal fs-4"></i>
+                        </div>
+                        <h5 class="text-white fw-bold mb-2">Crude Price Pass-Through</h5>
+                        <p class="text-light-muted small leading-relaxed mb-3">
+                            Evaluating how changes in the Brent crude oil benchmark (USD/barrel) reflect on retail petrol and diesel pump prices across different national markets.
+                        </p>
+                        <div class="finding-placeholder-box p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                            <span class="badge bg-secondary-subtle text-light-muted mb-1 text-xs">Empirical Observation</span>
+                            <p class="small text-light-muted mb-0 italic">
+                                [Observed in Tableau Story: Pass-through elasticity is asymmetric; crude price hikes translate rapidly to pump rates, while downward corrections reflect regional lag].
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theme 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="finding-card card bg-card-dark border-0 rounded-4 p-4 h-100">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="finding-step-badge">Point 02</span>
+                            <i class="bi bi-percent text-teal fs-4"></i>
+                        </div>
+                        <h5 class="text-white fw-bold mb-2">Taxation vs. Subsidy Regimes</h5>
+                        <p class="text-light-muted small leading-relaxed mb-3">
+                            Investigating why consumer pump prices vary substantially between nations facing identical global crude commodity procurement costs.
+                        </p>
+                        <div class="finding-placeholder-box p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                            <span class="badge bg-secondary-subtle text-light-muted mb-1 text-xs">Empirical Observation</span>
+                            <p class="small text-light-muted mb-0 italic">
+                                [Observed in Tableau Story: Fiscal policy (excise taxes, VAT, vs. subsidy caps) accounts for the largest portion of global pump price dispersion].
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theme 3 -->
+                <div class="col-lg-4 col-md-12">
+                    <div class="finding-card card bg-card-dark border-0 rounded-4 p-4 h-100">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="finding-step-badge">Point 03</span>
+                            <i class="bi bi-bar-chart-line text-teal fs-4"></i>
+                        </div>
+                        <h5 class="text-white fw-bold mb-2">Income Tier Vulnerability</h5>
+                        <p class="text-light-muted small leading-relaxed mb-3">
+                            Cross-referencing price indices with World Bank income tiers (High, Upper-Middle, Lower-Middle) to identify consumer purchasing pressure.
+                        </p>
+                        <div class="finding-placeholder-box p-3 rounded-3 bg-navy-alt border border-secondary border-opacity-10">
+                            <span class="badge bg-secondary-subtle text-light-muted mb-1 text-xs">Empirical Observation</span>
+                            <p class="small text-light-muted mb-0 italic">
+                                [Observed in Tableau Story: Lower-middle income economies exhibit heightened sensitivity to global price volatility unless buffered by fiscal subsidies].
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytical Conclusions Section -->
+        <div class="conclusion-box p-4 p-md-5 rounded-4 mt-5 bg-card-dark border border-secondary border-opacity-25">
+            <div class="row align-items-center gy-4">
+                <div class="col-lg-8">
+                    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-teal-subtle text-teal small fw-bold mb-3">
+                        <i class="bi bi-check-circle-fill"></i> Project Summary &amp; Takeaway
+                    </div>
+                    <h4 class="text-white fw-bold mb-3">Key Synthesis &amp; Policy Implications</h4>
+                    <p class="text-light-muted small leading-relaxed mb-3">
+                        The visual evidence synthesized across this Tableau Story demonstrates that global fuel prices are not dictated solely by geological scarcity or Brent crude benchmarks. Instead, retail energy costs represent a composite equation where sovereign taxation regimes, green energy transition policies, and socioeconomic subsidy structures play a determinative role.
+                    </p>
+                    <p class="text-light-muted small leading-relaxed mb-0">
+                        For comprehensive variable-level drilldowns, users are encouraged to explore the interactive dashboard with customizable filters.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="p-4 rounded-4 bg-navy-alt border border-secondary border-opacity-25">
+                        <i class="bi bi-shield-check display-4 text-teal mb-3"></i>
+                        <h6 class="text-white fw-bold">Explore All Dimensions</h6>
+                        <p class="text-light-muted small mb-3">Test specific hypotheses using multi-select filters.</p>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-teal-gradient btn-sm px-4 py-2 rounded-pill">
+                            Return to Dashboard <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const viz = document.getElementById('tableauStoryViz');
+        const loadingState = document.getElementById('storyLoadingState');
+        const fallbackAlert = document.getElementById('storyFallbackAlert');
+        const reloadBtn = document.getElementById('reloadStoryBtn');
+
+        if (viz) {
+            viz.addEventListener('firstinteractive', function () {
+                if (loadingState) loadingState.classList.add('d-none');
+            });
+
+            setTimeout(function () {
+                if (loadingState && !loadingState.classList.contains('d-none')) {
+                    loadingState.classList.add('d-none');
+                    if (fallbackAlert) fallbackAlert.classList.remove('d-none');
+                }
+            }, 8000);
+        }
+
+        if (reloadBtn && viz) {
+            reloadBtn.addEventListener('click', function () {
+                if (loadingState) loadingState.classList.remove('d-none');
+                const src = viz.getAttribute('src');
+                viz.setAttribute('src', '');
+                setTimeout(() => {
+                    viz.setAttribute('src', src);
+                }, 200);
+            });
+        }
+    });
+</script>
+{% endblock %}
+
